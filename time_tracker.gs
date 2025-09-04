@@ -23,6 +23,11 @@ function startActivity() {
   sheet.getRange(newRow, 1).setValue(Utilities.formatDate(now, Session.getScriptTimeZone(), "yyyy-MM-dd")); // date
   sheet.getRange(newRow, 2).setValue(activity); // activity
   sheet.getRange(newRow, 3).setValue(now); // start time
+
+  // scroll down
+  // sheet.setActiveRange(sheet.getRange(newRow, 1));
+  sheet.getRange(newRow, 2).activate(); // activity name cell
+  // SpreadsheetApp.flush(); // only if laggy
 }
 
 function stopActivity() {
