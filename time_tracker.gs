@@ -31,9 +31,37 @@ function stopActivity() {
   var now = new Date();
 
   sheet.getRange(lastRow, 4).setValue(now); // end time
+  enforceTimeFormat(); // reformat just in case
 }
 
-// // reformatter
+// source table time formatter
+function enforceTimeFormat() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  // columns C and D are start and end time
+  sheet.getRange("C:D").setNumberFormat("h:mm AM/PM");
+}
+function onOpen() {
+  enforceTimeFormat();
+}
+// this is too heavy
+// const SOURCE_SHEET = 'tracker';
+// function onEdit(e) {
+//   if (!e) return;
+//   const sh = e.range.getSheet();
+//   if (sh.getName() !== SOURCE_SHEET) return;          // ignore other tabs
+
+//   // If the edit intersects columns C:D (Start/End), re-apply the time format
+//   const colStart = e.range.getColumn();
+//   const colEnd   = colStart + e.range.getNumColumns() - 1;
+//   const intersectsCD = !(colEnd < 3 || colStart > 4);
+//   if (intersectsCD) {
+//     sh.getRange(e.range.getRow(), Math.max(3, colStart),
+//                 e.range.getNumRows(), Math.min(4, colEnd) - Math.max(3, colStart) + 1)
+//       .setNumberFormat("h:mm AM/PM");
+//   }
+// }
+
+// pivot table reformatter
 function onEdit(e) {
   var sheet = e.source.getActiveSheet();
   var colCount = sheet.getMaxColumns();
@@ -43,7 +71,7 @@ function onEdit(e) {
   range.setFontFamily("Victor Mono").setFontSize(14);
 }
 
-// bulk reformatter (run once)
+// pivot table bulk reformatter (run once)
 // function onEdit(e) {
 //   var sheet = e.source.getActiveSheet();
 //   var range = sheet.getDataRange();
