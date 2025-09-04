@@ -20,9 +20,9 @@ function startActivity() {
 
   // write new entry in the next empty row
   var newRow = lastRow + 1;
-  sheet.getRange(newRow, 1).setValue(Utilities.formatDate(now, Session.getScriptTimeZone(), "yyyy-MM-dd")); // Date
-  sheet.getRange(newRow, 2).setValue(activity); // Activity
-  sheet.getRange(newRow, 3).setValue(now); // Start Time
+  sheet.getRange(newRow, 1).setValue(Utilities.formatDate(now, Session.getScriptTimeZone(), "yyyy-MM-dd")); // date
+  sheet.getRange(newRow, 2).setValue(activity); // activity
+  sheet.getRange(newRow, 3).setValue(now); // start time
 }
 
 function stopActivity() {
@@ -30,5 +30,22 @@ function stopActivity() {
   var lastRow = sheet.getLastRow();
   var now = new Date();
 
-  sheet.getRange(lastRow, 4).setValue(now); // End Time
+  sheet.getRange(lastRow, 4).setValue(now); // end time
 }
+
+// // reformatter
+function onEdit(e) {
+  var sheet = e.source.getActiveSheet();
+  var colCount = sheet.getMaxColumns();
+
+  // Example: force font & size for the last column if newly added
+  var range = sheet.getRange(1, colCount, sheet.getMaxRows());
+  range.setFontFamily("Victor Mono").setFontSize(14);
+}
+
+// bulk reformatter (run once)
+// function onEdit(e) {
+//   var sheet = e.source.getActiveSheet();
+//   var range = sheet.getDataRange();
+//   range.setFontFamily("Victor Mono").setFontSize(14);
+// }
