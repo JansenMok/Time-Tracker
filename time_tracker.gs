@@ -45,9 +45,23 @@ function enforceTimeFormat() {
   // columns C and D are start and end time
   sheet.getRange("C:D").setNumberFormat("h:mm AM/PM");
 }
+
 function onOpen() {
   enforceTimeFormat();
+
+  // jump to the latest activity on page load
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sh = ss.getActiveSheet();              // or ss.getSheetByName("Sheet1")
+  const last = sh.getLastRow();
+
+  // if there’s at least one data row (header in row 1)
+  if (last >= 2) {
+    sh.activate();                              // ensure this sheet is focused
+    sh.getRange(last, 2).activate();           // column B = Activity
+    // SpreadsheetApp.flush(); // uncomment if you notice visual lag
+  }
 }
+
 // this is too heavy
 // const SOURCE_SHEET = 'tracker';
 // function onEdit(e) {
